@@ -1,0 +1,20 @@
+{
+  "name": "avi-viewagent",
+  "version": "1.0.0",
+  "description": "Electron.js based view agent module for AppVersion.info",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SmirnovStatica/avi-viewagent.git"
+  },
+  "keywords": [],
+  "author": "Statica Sp. z o.o.",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/SmirnovStatica/avi-viewagent/issues"
+  },
+  "homepage": "https://github.com/SmirnovStatica/avi-viewagent#readme"
+}
