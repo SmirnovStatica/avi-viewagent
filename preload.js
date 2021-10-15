@@ -8,10 +8,10 @@ contextBridge.exposeInMainWorld(
             // whitelist channels
             // to main
             let validChannels = [
-                "app-close",  
-                "store-set",
-                "window-show",
-                "error"
+                "aviwindow-window-close",  
+                "aviwindow-window-show",
+                "aviwindow-store-set",
+                "aviwindow-error"
             ];
             if (validChannels.includes(channel)) {
                 ipcRenderer.send(channel, data);

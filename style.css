@@ -1,0 +1,56 @@
+* {
+    outline: none;
+    padding: 0;
+    margin:  0;
+    box-sizing: border-box;
+}
+
+html {
+    overflow: hidden;
+    padding: 0;
+    margin: 0;
+    background-color: #ccc;
+}
+  
+body {
+    padding: 1px;
+    margin: 0;
+}
+
+#close {
+    display: block;
+    height: 12px;
+    width: 12px;
+    background-image: url('./assets/img/close.svg');
+    background-size: contain;
+    background-repeat: no-repeat;
+    position: absolute;
+    top: 16px;
+    right: 29px;
+    cursor: pointer;
+    z-index: 99;
+    transition: .1s;
+    opacity: 0.5;
+}
+
+#close:hover {
+    opacity: 1;
+}
+  
+#draggable {
+    display: block;
+    height: 40px;
+    width: calc(100% - 50px);
+    position: absolute;
+    top: 0;
+    z-index: 1;
+    opacity: .5;
+    -webkit-app-region: drag;
+}
+
+#banner_iframe {
+    border: 1px solid #ccc;
+    overflow: hidden;
+    height: 100%;
+    width: 100%;
+}

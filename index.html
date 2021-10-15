@@ -18,19 +18,19 @@
 const params = new URLSearchParams(window.location.search)
 const channelId = params.get('channelId')
 const releaseVersion = params.get('releaseVersion')
-const force = !!params.get('force')
+const force = params.get('force') === 'true'
 const runsCount = parseInt(params.get('runsCount'))
 const lastReleaseVersion = params.get('lastReleaseVersion')
 
-window.api.send('store-set', {
+window.api.send('aviwindow-store-set', {
     last_channel_uid: channelId,
     last_release_version: releaseVersion,
     last_mode: force ? 'force' : 'normal',
     last_run_at: new Date()
 })
 
-if (runs_count === 0) {
-    window.api.send('store-set', {
+if (runsCount === 0) {
+    window.api.send('aviwindow-store-set', {
         runs_count: 1,
         first_run_at: new Date()
     })
@@ -38,13 +38,13 @@ if (runs_count === 0) {
     const bannerType = force ? 'getbanner' : 'welcome'
     fetchBanner(channelId, releaseVersion, bannerType)
         .then((bannerSize) => {
-            window.api.send('window-show', bannerSize) 
+            window.api.send('aviwindow-window-show', bannerSize) 
         }) 
-        .catch(() => { 
-            window.api.send('error', 'Failed to fetch banner')
+        .catch((e) => { 
+            window.api.send('aviwindow-error', 'Failed to fetch banner')
         })
 } else {
-    window.api.send('store-set', { 'runs_count': runsCount + 1 })
+    window.api.send('aviwindow-store-set', { 'runs_count': runsCount + 1 })
 
     // if releaseVersion > lastReleaseVersion -> returns '1'
     const comparingResult = lastReleaseVersion === undefined ? 1 : compareByReleaseVersion(lastReleaseVersion, releaseVersion);
@@ -52,13 +52,13 @@ if (runs_count === 0) {
     if (comparingResult === 1 || force) {
         fetchBanner(channelId, releaseVersion, 'getbanner')
             .then((bannerSize) => {
-                window.api.send('show_window', bannerSize);
+                window.api.send('aviwindow-window-show', bannerSize);
             })
             .catch((err) => {
-                window.api.send('error', 'Failed to fetch banner')
+                window.api.send('aviwindow-error', 'Failed to fetch banner')
             })
     } else {
-        console.log('comparing is not passed');
+        window.api.send('aviwindow-error', 'Release version comparing is not passed. User saw this banner')
     }
 }
 
@@ -68,10 +68,10 @@ function fetchBanner(channelId, releaseVersion, bannerType) {
         let bannerUrl
         if (bannerType === 'welcome') {
             bannerUrl = `https://www.appversion.info/welcome.php?app_uid=${channelId}&release_version=${releaseVersion}`
-            window.api.send('store-set', { 'last_script': 'welcome.php' })
+            window.api.send('aviwindow-store-set', { 'last_script': 'welcome.php' })
         } else {
             bannerUrl = `https://www.appversion.info/getbanner.php?app_uid=${channelId}&release_version=${releaseVersion}`
-            window.api.send('store-set', { 'last_script': 'getbanner.php' })
+            window.api.send('aviwindow-store-set', { 'last_script': 'getbanner.php' })
         }
 
         fetch(bannerUrl, {
@@ -97,7 +97,11 @@ function fetchBanner(channelId, releaseVersion, bannerType) {
             bannerContainer.style['box-sizing'] = responseBanner.style['box-sizing']
             bannerContainer.innerHTML = responseBanner.innerHTML
 
-            resolve({ width, height })
+            document.getElementById('close').addEventListener('click', () => {
+                window.api.send('aviwindow-window-close');
+            })
+
+            resolve({ width: +width, height: +height })
         }).catch(e => {
             reject('Error on fetch banner')
         }) 
@@ -160,4 +164,3 @@ function compareByReleaseVersion(a, b) {
 }
 
 </script>
-
