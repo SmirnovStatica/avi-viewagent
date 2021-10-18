@@ -13,7 +13,7 @@ npm i avi-window
 ## Usage
 
 New instance of module creates AppVersion.info window. In constructor you need to pass object with parameters:
-- userDataPath {String}. By default you can get this path by method getPath() from app instance ( app.getPath('userData') );
+- userDataPath {String}. By default you can get this path by method 'getPath()' from 'app' instance ( app.getPath('userData') )
 - channelId {String}
 - releaseVersion {String}
 - force {Boolean}
