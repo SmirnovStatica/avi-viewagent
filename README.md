@@ -13,12 +13,13 @@ npm i avi-window
 ## Usage
 
 New instance of module creates AppVersion.info window. In constructor you need to pass object with parameters:
+
 - userDataPath {String}. By default you can get this path by method 'getPath()' from 'app' instance (see example)
 - channelId {String}
 - releaseVersion {String}
 - force {Boolean}
 
-More info about 'channelId', 'releaseVersion' and 'force' ypu can find here - https://appversion.info/views/integration/running-view-agent.html.
+More info about these parameters - https://appversion.info/views/integration/running-view-agent.html.
 
 You can add event listener to know when AVI window is closed (see example).
 
@@ -39,7 +40,7 @@ aviWindow.on('closed', () => {
 })
 ```
 
-It will create folder in your user data folder with name: 'AVI_' + channelId. This folder stores configuration file to provide appversion.info user experience logic. You can uninstall this folder with following static method: 
+It creates folder in your user data folder with name: 'AVI_' + channelId. This folder stores configuration file to provide appversion.info user experience logic. You can uninstall this folder with following static method: 
 
 ```
 AVIWindow.uninstall({
@@ -48,4 +49,4 @@ AVIWindow.uninstall({
 })
 ```
 
-AppVersionInfo website - https://appversion.info
+AppVersionInfo website - https://appversion.info.
