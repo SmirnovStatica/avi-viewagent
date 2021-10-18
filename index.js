@@ -152,7 +152,7 @@ class AVIWindow extends BrowserWindow {
 
     handleError(error) {
         console.error(`AVIWindow Error: ${error}`)
-        // this.closeWindow()
+        this.closeWindow()
     }
     
     /*
