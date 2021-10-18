@@ -1,6 +1,6 @@
 {
-  "name": "avi-viewagent",
-  "version": "1.0.0",
+  "name": "avi-window",
+  "version": "1.0.1",
   "description": "Electron.js based view agent module for AppVersion.info",
   "main": "index.js",
   "scripts": {

@@ -8,12 +8,12 @@ const Store = require('./lib/store')
 class AVIWindow extends BrowserWindow {
     /*
     * @constructor AVIWindow
-    * @param {string} appDataPath
+    * @param {string} userDataPath
     * @param {string} channelId
     * @param {string} releaseVersion
     * @param {boolean} force
     */
-    constructor({ appDataPath, channelId, releaseVersion, force }) {
+    constructor({ userDataPath, channelId, releaseVersion, force }) {
         try {
             super({ 
                 webPreferences: {
@@ -31,23 +31,22 @@ class AVIWindow extends BrowserWindow {
                 skipTaskbar: true,
                 resizable: false,
                 alwaysOnTop: true,
-                icon: path.join(__dirname, 'assets/img/logo.png'),
                 roundedCorners: false
             })
             
-            if (!appDataPath || typeof appDataPath !== 'string') 
-                throw 'AVIWindow: Invalid appDataPath'
+            if (!userDataPath || typeof userDataPath !== 'string') 
+                throw 'Invalid userDataPath'
             if (!channelId || typeof channelId !== 'string') 
-                throw 'AVIWindow: Invalid channelId'
+                throw 'Invalid channelId'
             if (!releaseVersion || typeof releaseVersion !== 'string') 
-                throw 'AVIWindow: Invalid release version'
+                throw 'Invalid release version'
             if (typeof force !== 'boolean') 
-                throw 'AVIWindow: Invalid force value'
+                throw 'Invalid force value'
             
-            const aviDataPath = path.join(appDataPath, `AVI_${channelId}`)
+            const aviDataPath = path.join(userDataPath, `AVI_${channelId}`)
             if (!fs.existsSync(aviDataPath)) fs.mkdirSync(aviDataPath)
            
-            this.store = this.initStore(path.join(appDataPath, `AVI_${channelId}`))
+            this.store = this.initStore(aviDataPath)
              
             const params = `channelId=${channelId}` + 
                 `&releaseVersion=${releaseVersion}` +
@@ -72,11 +71,11 @@ class AVIWindow extends BrowserWindow {
 
     /*
     * @function initStore
-    * @param {string} appDataPath
+    * @param {string} aviDataPath
     * @returns {Store}
     */
 
-    initStore(appDataPath) {
+    initStore(aviDataPath) {
         ipcMain.on('aviwindow-store-set', (event, entries) => {
             for (const [key, value] of Object.entries(entries)) {
                 this.store.set(key, value);
@@ -84,8 +83,7 @@ class AVIWindow extends BrowserWindow {
         })
 
         return new Store({
-            configName: 'config',
-            appDataPath,
+            aviDataPath,
             defaults: {
                 runs_count: 0,
                 last_release_version: undefined
@@ -153,7 +151,7 @@ class AVIWindow extends BrowserWindow {
     */
 
     handleError(error) {
-        console.error(`Error: ${error}.`)
+        console.error(`AVIWindow Error: ${error}`)
         // this.closeWindow()
     }
     
@@ -171,17 +169,17 @@ class AVIWindow extends BrowserWindow {
     * @returns {void}
     */
 
-    static uninstall({ appDataPath, channelId }) {
+    static uninstall({ userDataPath, channelId }) {
         try {
-            if (!appDataPath || typeof appDataPath !== 'string')
-                throw 'AVIWindow uninstall: Invalid appDataPath'
+            if (!userDataPath || typeof userDataPath !== 'string')
+                throw 'Invalid userDataPath'
             if (!channelId || typeof channelId !== 'string')
-                throw 'AVIWindow uninstall: Invalid channelId'
+                throw 'Invalid channelId'
     
-            const aviDataPath = path.join(appDataPath, `AVI_${channelId}`)
+            const aviDataPath = path.join(userDataPath, `AVI_${channelId}`)
             if (fs.existsSync(aviDataPath)) fs.rmSync(aviDataPath, { recursive: true })
         } catch (error) {
-            console.error(`Error: ${error}.`)
+            console.error(`AVIWindow uninstall error: ${error}`)
         }
     }
 }
