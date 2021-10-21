@@ -25,7 +25,7 @@ You can add event listener to know when AVI window is closed (see example).
 
 ### Example:
 
-```
+```javascript
 const { app } = require('electron')
 const AVIWindow = require('avi-window')
 
@@ -38,11 +38,25 @@ let aviWindow = new AVIWindow({
 aviWindow.on('closed', () => {
   aviWindow = null
 })
+
+// AppVersion.info window will be shown if the below conditions are met:
+// - channel with id = channel_id exists,
+// - banner with id = app_version exists in this channel,
+// - this is not the first run of AppVersionInfo.exe,
+// - previous run was with a diffrent app_version number.
+// So basically, for the first time, you shouldn't expect anything to happen, and it's o.k.
+// If you want to see something:
+// - run your code with_appversion = "1",
+// - prepare banner for release version = 2,
+// - run your code with_appversion = "2".
 ```
 
-It creates folder in your user data folder with name: 'AVI_' + channelId. This folder stores configuration file to provide appversion.info user experience logic. You can uninstall this folder with following static method: 
+On first run of module it tries to open welcome banner. Welcome banner is a banner which has '0' release version. If banner with '0' release version does not exists nothing will happen on first run of AVIWindow.
 
-```
+AVIWindow creates folder in your user data folder with name: 'AVI_' + channelId. This folder stores configuration file to provide appversion.info user experience logic.
+You can uninstall this folder with following static method: 
+
+```javascript
 AVIWindow.uninstall({
   userDataPath: app.getPath('userData'),
   channelId: 'sAJ2_QeCP'
