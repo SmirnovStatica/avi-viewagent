@@ -1,6 +1,6 @@
 {
   "name": "avi-window",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Electron.js based view agent module for AppVersion.info",
   "main": "index.js",
   "scripts": {
